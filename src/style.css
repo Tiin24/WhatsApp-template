@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+    --color-card: rgb(235 240 245);
+  }
