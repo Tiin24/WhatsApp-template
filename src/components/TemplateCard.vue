@@ -9,7 +9,6 @@ const formattedDate = computed(() => {
   return format(new Date(props.template.createdAt), 'd MMM', { locale: es })
 })
 
-
 const props = defineProps<{
   template: Template
 }>()
@@ -45,7 +44,6 @@ const highlightVariables = (text: string) => {
   })
 }
 
-
 const highlightedBody = computed(() => {
   return highlightVariables(props.template.components.body.content)
 })
@@ -66,7 +64,6 @@ const getIconName = (type: string) => {
       return 'md-morevert'
   }
 }
-
 
 const maxVisible = 2
 const showAllButtons = ref(false)
@@ -98,26 +95,21 @@ const statusClass = computed(() => {
       return 'bg-blue-100 text-blue-800 rounded p-1'
   }
 })
-
 </script>
 
 <template>
   <div class="bg-card rounded-xl shadow-sm border border-gray-200 h-85 flex flex-col overflow-hidden">
-
     <!-- Header -->
     <div class="flex items-center justify-between p-3 gap-1 bg-[#dde2ec] rounded-t-xl">
       <div class="flex flex-col gap-1">
-        <!-- Nombre con truncado -->
         <span class="text-xs text-gray-700 font-bold truncate max-w-[20ch]" :title="template.name">
           {{ template.name }}
         </span>
-        <div class=" text-xs rounded-full inline-flex items-center w-fit">
+        <div class="text-xs rounded-full inline-flex items-center w-fit">
           <div :class="statusClass">
             <span class="font-medium">{{ template.status }}</span>
           </div>
-
           <div>
-            <!-- Código de lenguaje en mayúsculas -->
             <span class="truncate ml-1 text-gray-500">{{ template.category }}</span>
           </div>
         </div>
@@ -140,17 +132,11 @@ const statusClass = computed(() => {
             <div class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-20">
               <div class="py-1">
                 <button @click="handleEdit"
-                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Edit
-                </button>
+                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</button>
                 <button @click="handleDuplicate"
-                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Duplicate
-                </button>
+                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">Duplicate</button>
                 <button @click="handleDelete"
-                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Delete
-                </button>
+                  class="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">Delete</button>
               </div>
             </div>
           </div>
@@ -158,26 +144,30 @@ const statusClass = computed(() => {
       </div>
     </div>
 
-
     <!-- Main -->
-    <div class="flex-1 overflow-y-auto p-4">
-      <!-- header -->
-      <div class="bg-white rounded-lg p-4 shadow-sm w-60">
+    <div class="bubble flex-1 overflow-y-auto p-4">
+      <div class="bg-white rounded-tr-lg rounded-br-lg rounded-bl-lg p-4 shadow-sm w-60 relative">
+        
+        <!-- Tail -->
+        <div class="absolute top-0 -left-2 w-0 h-0 border-t-3 border-b-8 border-r-8 border-transparent border-r-white">
+        </div>
+
+
+        <!-- header -->
         <h3 class="text-gray-800 font-medium text-sm mb-1">{{ template.components.header.content }}</h3>
+
         <!-- body -->
         <div class="space-y-3">
           <div class="text-gray-700 text-xs">
-
             <div class="text-gray-700 text-xs" v-html="highlightedBody"></div>
           </div>
 
           <!-- footer main -->
-
           <div class="border-t border-gray-300"></div>
+
           <!-- buttons -->
           <div v-if="visibleButtons.length" class="mt-4">
             <div v-for="(button, index) in visibleButtons" :key="button.id" class="flex flex-col">
-
               <div v-if="index !== 0" class="border-t border-gray-300 my-2"></div>
               <div class="flex items-center justify-center gap-2 text-xs text-blue-600 hover:underline cursor-pointer">
                 <v-icon :name="getIconName(button.type)" scale="1" />
@@ -185,7 +175,7 @@ const statusClass = computed(() => {
               </div>
             </div>
 
-            <!-- Botón para togglear mostrar más/menos -->
+            <!-- Mostrar más/menos -->
             <div v-if="hasMoreButtons"
               class="mt-2 pt-2 border-t border-gray-300 text-xs text-blue-600 hover:underline cursor-pointer flex items-center justify-center gap-1"
               @click="toggleShowButtons">
@@ -193,20 +183,16 @@ const statusClass = computed(() => {
               {{ showAllButtons ? 'Mostrar menos' : 'Explorar más' }}
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <!-- Footer -->
     <div
-      class=" bg-[#dde2ec] flex items-center justify-between px-4 py-3 text-sm text-gray-500 border-t border-gray-200">
+      class="bg-[#dde2ec] flex items-center justify-between px-4 py-2 text-sm text-gray-500 border-t border-gray-200">
       <span class="bg-white w-5 rounded justify-center items-center flex">{{ template.language }}</span>
       <span>{{ formattedDate }}</span>
     </div>
-
   </div>
 </template>
 

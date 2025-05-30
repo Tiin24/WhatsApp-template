@@ -41,7 +41,6 @@ onBeforeUnmount(() => {
     <TemplateCard v-for="template in templates" :key="template.id" :template="template" />
   </TransitionGroup>
 
-
   <div v-if="loading" class="text-center mt-4 text-gray-500">Cargando Templates</div>
   <div v-else-if="!hasMore" class="text-center mt-4 text-gray-400">No hay más resultados</div>
 </template>
