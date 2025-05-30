@@ -35,10 +35,9 @@ onBeforeUnmount(() => {
 
 
 <template>
-  <h1 class="text-2xl font-bold mb-6">Hola desde Dashboard</h1>
 
   <TransitionGroup name="fade" tag="div" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <CreateNewTemplate />
+    <CreateNewTemplate :key="'create-new-template'" />
     <TemplateCard v-for="template in templates" :key="template.id" :template="template" />
   </TransitionGroup>
 

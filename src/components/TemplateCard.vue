@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MoreVertical, Phone, MoreHorizontal, Reply, Link, ChevronUp } from 'lucide-vue-next'
 import type { Template } from '../types/Template'
 import { computed } from 'vue'
 import { format } from 'date-fns'
@@ -42,7 +41,7 @@ const handleDelete = () => {
 
 const highlightVariables = (text: string) => {
   return text.replace(/(\{\{[^}]+\}\}|[A-Z_]+_[A-Z_]+)/g, (match) => {
-    return `<span class="bg-teal-100 text-teal-800 px-1 rounded font-medium">${match}</span>`
+    return `<span class="bg-gray-200 text-green-700 px-1 rounded font-medium">${match}</span>`
   })
 }
 
@@ -51,22 +50,23 @@ const highlightedBody = computed(() => {
   return highlightVariables(props.template.components.body.content)
 })
 
-const getButtonIcon = (type: string) => {
+const getIconName = (type: string) => {
   switch (type) {
     case 'QUICK_REPLY':
-      return Reply
+      return 'bi-reply-fill'
     case 'PHONE_NUMBER':
-      return Phone
+      return 'bi-telephone-outbound-fill'
     case 'STATIC_URL':
-      return Link
+      return 'la-external-link-alt-solid'
     case 'EXPLORE':
-      return MoreHorizontal
+      return 'md-morehoriz'
     case 'COLLAPSE':
-      return ChevronUp
+      return 'fa-chevron-up'
     default:
-      return MoreHorizontal
+      return 'md-morevert'
   }
 }
+
 
 const maxVisible = 2
 const showAllButtons = ref(false)
@@ -102,13 +102,13 @@ const statusClass = computed(() => {
 </script>
 
 <template>
-  <div class="bg-[#f1f5f9] rounded-xl shadow-sm border border-gray-200 h-80 flex flex-col overflow-hidden">
+  <div class="bg-card rounded-xl shadow-sm border border-gray-200 h-85 flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <div class="flex items-center justify-between p-4 gap-1 bg-slate-100 rounded-t-xl">
+    <div class="flex items-center justify-between p-3 gap-1 bg-[#dde2ec] rounded-t-xl">
       <div class="flex flex-col gap-1">
         <!-- Nombre con truncado -->
-        <span class="text-xs text-gray-700 font-medium truncate max-w-[20ch]" :title="template.name">
+        <span class="text-xs text-gray-700 font-bold truncate max-w-[20ch]" :title="template.name">
           {{ template.name }}
         </span>
         <div class=" text-xs rounded-full inline-flex items-center w-fit">
@@ -123,15 +123,15 @@ const statusClass = computed(() => {
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1">
         <button
-          class="h-7 px-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2">
+          class="h-6 w-10 px-1 bg-white border border-gray-300 rounded-md text-xs font-normal text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2">
           View
         </button>
         <div class="relative">
           <button @click="toggleDropdown"
-            class="h-7 w-7 px-2 bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2">
-            <MoreVertical :size="12" />
+            class="h-6 w-6 bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2">
+            <v-icon name="md-morevert" scale="0.75" />
             <span class="sr-only">More options</span>
           </button>
 
@@ -158,18 +158,17 @@ const statusClass = computed(() => {
       </div>
     </div>
 
-    <div class="border-t border-gray-300"></div>
 
     <!-- Main -->
     <div class="flex-1 overflow-y-auto p-4">
       <!-- header -->
-      <div class="bg-white rounded-lg p-4 shadow-sm">
-        <h3 class="text-gray-800 font-medium mb-3">{{ template.components.header.content }}</h3>
+      <div class="bg-white rounded-lg p-4 shadow-sm w-60">
+        <h3 class="text-gray-800 font-medium text-sm mb-1">{{ template.components.header.content }}</h3>
         <!-- body -->
         <div class="space-y-3">
-          <div class="text-gray-700 text-sm leading-relaxed">
+          <div class="text-gray-700 text-xs">
 
-            <div class="text-gray-700 text-sm leading-relaxed" v-html="highlightedBody"></div>
+            <div class="text-gray-700 text-xs" v-html="highlightedBody"></div>
           </div>
 
           <!-- footer main -->
@@ -180,17 +179,17 @@ const statusClass = computed(() => {
             <div v-for="(button, index) in visibleButtons" :key="button.id" class="flex flex-col">
 
               <div v-if="index !== 0" class="border-t border-gray-300 my-2"></div>
-              <div class="flex items-center justify-center gap-2 text-sm text-blue-600 hover:underline cursor-pointer">
-                <component :is="getButtonIcon(button.type)" :size="16" />
+              <div class="flex items-center justify-center gap-2 text-xs text-blue-600 hover:underline cursor-pointer">
+                <v-icon :name="getIconName(button.type)" scale="1" />
                 {{ button.text }}
               </div>
             </div>
 
             <!-- Botón para togglear mostrar más/menos -->
             <div v-if="hasMoreButtons"
-              class="mt-2 pt-2 border-t border-gray-300 text-sm text-blue-600 hover:underline cursor-pointer flex items-center justify-center gap-1"
+              class="mt-2 pt-2 border-t border-gray-300 text-xs text-blue-600 hover:underline cursor-pointer flex items-center justify-center gap-1"
               @click="toggleShowButtons">
-              <component :is="getButtonIcon(showAllButtons ? 'COLLAPSE' : 'EXPLORE')" :size="16" />
+              <v-icon :name="getIconName(showAllButtons ? 'COLLAPSE' : 'EXPLORE')" scale="1" />
               {{ showAllButtons ? 'Mostrar menos' : 'Explorar más' }}
             </div>
           </div>
@@ -202,7 +201,8 @@ const statusClass = computed(() => {
 
     <!-- Footer -->
     <!-- Footer -->
-    <div class="flex items-center justify-between px-4 py-3 text-sm text-gray-500 border-t border-gray-200">
+    <div
+      class=" bg-[#dde2ec] flex items-center justify-between px-4 py-3 text-sm text-gray-500 border-t border-gray-200">
       <span class="bg-white w-5 rounded justify-center items-center flex">{{ template.language }}</span>
       <span>{{ formattedDate }}</span>
     </div>

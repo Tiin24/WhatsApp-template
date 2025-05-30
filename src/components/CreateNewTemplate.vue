@@ -9,10 +9,10 @@ const handleLibraryLink = () => {
 </script>
 
 <template>
-    <div class="bg-[#f1f5f9] rounded-xl shadow-sm border border-gray-200 h-80 flex flex-col overflow-hidden">
+    <div class="bg-card rounded-xl shadow-sm border border-gray-200 h-85 flex flex-col overflow-hidden">
 
         <!-- Header -->
-        <div class="flex flex-col items-center justify-center p-4 bg-slate-100 rounded-md w-full">
+        <div class="flex flex-col items-center justify-center p-4 bg-card rounded-md w-full">
             <h3 class="text-base font-semibold text-gray-800 mb-4 text-center">Create new template</h3>
         </div>
         <div class="border-t border-gray-300"></div>
